@@ -71,3 +71,6 @@ load data         1482.641408   0.000000  0.004096   0.045056   0.000000  0.0000
 
 This is a simple wrapper around `psutil.virtual_memory()`, so check the docs here:
 https://psutil.readthedocs.io/en/latest/#memory
+
+
+WARNING!! debugging the memory will mess up your other timings, so for proper time taken measurements, turn off memory profile.
