@@ -65,13 +65,9 @@ class TicTocer(object):
         self.roll_mean_timers[name]['n'] += 1
 
         # check which tics are active right now.
-        if sum(self.timers.values()) != 0:
+        if not name in self.parents:
             parents = set([p[0] for p in filter(lambda x: x[1]>0, self.timers.items())])
-            if name in self.parents:
-                # check that the parents stay static.
-                assert(parents == self.parents[name])
-            else:
-                self.parents[name] = parents
+            self.parents[name] = parents
 
         if self.debug_memory:
             # compute number of types created
@@ -84,7 +80,7 @@ class TicTocer(object):
                     type_diff[k] = v_diff
             self.type_collects[name] = self._dict_sum(self.type_collects[name].copy(), type_diff)
 
-    def print_timing_infos(self):
+    def print_timing_infos(self, reset=False):
         '''
         print out the average and std times for all tic-toced computations
         '''
@@ -99,9 +95,10 @@ class TicTocer(object):
                    'std': std,
                    'total': n*mean }
             t_results.append(res)
-            roll_means['mean'] = 0
-            roll_means['name'] = 0
-            roll_means['n'] = 0
+            if reset:
+                roll_means['mean'] = 0
+                roll_means['name'] = 0
+                roll_means['n'] = 0
         df_results = DataFrame(t_results)
         df = df_results[['name', 'n', 'total', 'mean', 'std']]
 
