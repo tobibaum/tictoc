@@ -48,7 +48,7 @@ class TicTocer(object):
         time_taken = time.time() - self.timers[name]
         self.timers[name] = 0
         if print_it:
-            print '%-40s took %.4f'%(name, time_taken)
+            print('%-40s took %.4f'%(name, time_taken))
         roll_mean = self.roll_mean_timers[name]['mean']
         roll_sq_mean = self.roll_mean_timers[name]['sq_mean']
         n = self.roll_mean_timers[name]['n']
@@ -107,7 +107,7 @@ class TicTocer(object):
         try:
             assert(sum(self.timers.values()) == 0)
         except Exception as e:
-            print 'not all timers were closed in loop'
+            print('not all timers were closed in loop')
             raise e
 
         order = []
@@ -143,19 +143,19 @@ class TicTocer(object):
         df = df.reset_index(drop=True)
         pd.set_option('display.width', 1000)
 
-        print ''
-        print df
+        print('')
+        print(df)
 
         if self.debug_memory:
             df_types = DataFrame(self.type_collects)
             df_types[df_types.isnull()] = 0
             df_types /= 1e6 # display in ~MB
-            print df_types.T
+            print(df_types.T)
 
 def test_simple():
     tt = TicTocer()
 
-    print 'running the example, should take ~5s'
+    print('running the example, should take ~5s')
     seed = 0
     tt.tic('outer')
     if True:
