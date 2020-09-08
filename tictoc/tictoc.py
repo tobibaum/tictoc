@@ -73,7 +73,7 @@ class TicTocer(object):
             # compute number of types created
             new_types = dict(psutil.virtual_memory()._asdict())
             type_diff = {}
-            for k, v_new in new_types.iteritems():
+            for k, v_new in new_types.items():
                 v_old = self.types[name].get(k, 0)
                 v_diff = v_new - v_old 
                 if v_diff != 0:
@@ -85,7 +85,7 @@ class TicTocer(object):
         print out the average and std times for all tic-toced computations
         '''
         t_results = []
-        for name, roll_means in self.roll_mean_timers.iteritems():
+        for name, roll_means in self.roll_mean_timers.items():
             mean = roll_means['mean']
             std = roll_means['std']
             n = roll_means['n']
