@@ -10,6 +10,7 @@ with open(base_version_filename) as fh:
 
 setup(name='tictoc',
       version=VERSION,
+      url='https://github.com/tobibaum/tictoc',
       description='''tictoc tool for nondeterministic program paths and memory
                      consumption''',
       author='Tobi Baumgartner',
