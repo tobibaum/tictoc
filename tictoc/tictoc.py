@@ -107,7 +107,12 @@ class TicTocer(object):
         try:
             assert(sum(self.timers.values()) == 0)
         except Exception as e:
+            print('===tictoc ERROR===')
             print('not all timers were closed in loop')
+            print('this probably means some escapes via "continue" or missing "tocs"')
+            open_timers = [k for k, v in self.timers.items() if v!=0]
+            print('open timers:', open_timers)
+            print('===tictoc ERROR===')
             raise e
 
         order = []
@@ -180,7 +185,7 @@ def test_simple():
             tt.toc('inner2_inner1')
             tt.tic('inner2_inner2')
             time.sleep(1)
-            tt.toc('inner2_inner2')
+            #tt.toc('inner2_inner2')
         tt.toc('inner2')
     tt.toc('outer')
 
