@@ -19,8 +19,14 @@ This can be very helpful when designing an algorithm and trying to measure, whic
 paths are chosen and how much of the overall computation time they take.
 
 ### Usage
+
+Install to your enviroment via:
 ```
-from tictoc import TicTocer
+pip install git+https://github.com/tobibaum/tictoc.git
+```
+
+```
+from tictoc.tictoc import TicTocer
 
 tt = TicTocer()
 
