@@ -22,6 +22,7 @@ class TicTocer(object):
         self.type_collects = defaultdict(dict)
         self.roll_mean_timers = defaultdict(lambda: {'n': 0, 
                                                      'mean': 0.,
+                                                     'max': 0.,
                                                      'sq_mean': 0.,
                                                      'std': 0.})
         self.parents = {}
@@ -49,6 +50,7 @@ class TicTocer(object):
         self.timers[name] = 0
         if print_it:
             print('%-40s took %.4f'%(name, time_taken))
+        roll_max = self.roll_mean_timers[name]['max']
         roll_mean = self.roll_mean_timers[name]['mean']
         roll_sq_mean = self.roll_mean_timers[name]['sq_mean']
         n = self.roll_mean_timers[name]['n']
@@ -62,6 +64,9 @@ class TicTocer(object):
         self.roll_mean_timers[name]['sq_mean'] = new_roll_sq_mean
         self.roll_mean_timers[name]['std'] = math.sqrt(new_roll_sq_mean - \
                                                        new_roll_mean**2)
+        if time_taken > roll_max:
+            self.roll_mean_timers[name]['max'] = time_taken
+
         self.roll_mean_timers[name]['n'] += 1
 
         # check which tics are active right now.
@@ -87,20 +92,23 @@ class TicTocer(object):
         t_results = []
         for name, roll_means in self.roll_mean_timers.items():
             mean = roll_means['mean']
+            maximum = roll_means['max']
             std = roll_means['std']
             n = roll_means['n']
             res = {'name': name,
                    'mean': mean,
                    'n': n,
+                   'max': maximum,
                    'std': std,
                    'total': n*mean }
             t_results.append(res)
             if reset:
                 roll_means['mean'] = 0
+                roll_means['max'] = 0
                 roll_means['name'] = 0
                 roll_means['n'] = 0
         df_results = DataFrame(t_results)
-        df = df_results[['name', 'n', 'total', 'mean', 'std']]
+        df = df_results[['name', 'n', 'total', 'mean', 'max']]
 
         # left justify all the names.
 
@@ -122,7 +130,6 @@ class TicTocer(object):
                 if not n in order:
                     order.append(n)
                 # check whether any new children can be added now.
-                #for k, v in self.parents.iteritems():
                 len_before = len(order)
                 while True:
                     for k, v in sorted(self.parents.items(), key=lambda x:-len(x[1])):
@@ -147,6 +154,7 @@ class TicTocer(object):
         df['name'] = [d.ljust(max_name_len) for d in df['name']]
         df = df.reset_index(drop=True)
         pd.set_option('display.width', 1000)
+        pd.set_option('display.float_format', lambda x: '%.2f'%(x*1000))
 
         print('')
         print(df)
@@ -185,7 +193,7 @@ def test_simple():
             tt.toc('inner2_inner1')
             tt.tic('inner2_inner2')
             time.sleep(1)
-            #tt.toc('inner2_inner2')
+            tt.toc('inner2_inner2')
         tt.toc('inner2')
     tt.toc('outer')
 
