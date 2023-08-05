@@ -26,8 +26,17 @@ class TicTocer(object):
                                                      'sq_mean': 0.,
                                                      'std': 0.})
         self.parents = {}
+        self.prefix = ''
+        self.prefix_stop = ''
 
-    def tic(self, name):
+    def tic(self, name, prefix=''):
+        if self.prefix != '':
+            name = self.prefix + name
+
+        if prefix != '':
+            self.prefix_stop = name
+            self.prefix = prefix
+            
         self.timers[name] = time.time()
 
         if self.debug_memory:
@@ -45,6 +54,12 @@ class TicTocer(object):
         return res_dict
 
     def toc(self, name, print_it=False):
+        if name == self.prefix_stop:
+            self.prefix = ''
+
+        if self.prefix != '':
+            name = self.prefix + name
+
         # compute the time diff and update rolling mean stats
         time_taken = time.time() - self.timers[name]
         self.timers[name] = 0
