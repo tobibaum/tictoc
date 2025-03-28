@@ -1,6 +1,6 @@
 '''
 author: Tobi Baumgartner
-email: tobi@yahoo-inc.com
+email: tobibaum@gmail.com
 date: 03/03/16
 '''
 import math
