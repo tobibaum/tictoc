@@ -1,4 +1,6 @@
 # TicTocer
+_debug complex algorithms; find the time drain; get an accurate measurement of how it would run in prod_
+
 This tool helps to time computation times of non-deterministic program flows. similar to any tic-toc it keeps the timing for the encapsulated functions. on top of that it also keeps track of the average time a single operation (or lines of code) took and how often it has been invoked over the entire execution process. and examplar output could look like this:
 
 ```
