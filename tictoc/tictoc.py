@@ -15,7 +15,10 @@ class TicTocer(object):
     '''
     class to keep detailed timings for non-deterministic and varying execution paths
     '''
-    def __init__(self, debug_memory=False):
+    def __init__(self, debug_memory=False, verbose=False):
+        """
+        verbose: print out names when entering/leaving
+        """
         self.debug_memory = debug_memory
         self.timers = {}
         self.types = {}
@@ -36,12 +39,13 @@ class TicTocer(object):
         if prefix != '':
             self.prefix_stop = name
             self.prefix = prefix
-            
+
+        print(f'enter {name}')
         self.timers[name] = time.time()
 
         if self.debug_memory:
             self.types[name] = dict(psutil.virtual_memory()._asdict())
-    
+
     def _dict_sum(self, *dicts):
         all_keys = [k for d in dicts for k in d]
         all_keys = set(list(all_keys))
@@ -62,6 +66,8 @@ class TicTocer(object):
 
         # compute the time diff and update rolling mean stats
         time_taken = time.time() - self.timers[name]
+
+        print(f'exit {name}, {time_taken:.2f}')
         self.timers[name] = 0
         if print_it:
             print('%-40s took %.4f'%(name, time_taken))
