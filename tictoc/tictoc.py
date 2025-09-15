@@ -19,6 +19,7 @@ class TicTocer(object):
         """
         verbose: print out names when entering/leaving
         """
+        self.verbose = verbose
         self.debug_memory = debug_memory
         self.timers = {}
         self.types = {}
@@ -40,7 +41,8 @@ class TicTocer(object):
             self.prefix_stop = name
             self.prefix = prefix
 
-        print(f'enter {name}')
+        if self.verbose:
+            print(f'enter {name}')
         self.timers[name] = time.time()
 
         if self.debug_memory:
@@ -67,7 +69,8 @@ class TicTocer(object):
         # compute the time diff and update rolling mean stats
         time_taken = time.time() - self.timers[name]
 
-        print(f'exit {name}, {time_taken:.2f}')
+        if self.verbose:
+            print(f'exit {name}, {time_taken:.2f}')
         self.timers[name] = 0
         if print_it:
             print('%-40s took %.4f'%(name, time_taken))
